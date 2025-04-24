@@ -1,0 +1,8 @@
+h1 {
+  text-align: center;
+  padding-bottom: 20px;
+}
+.emociones {
+  display: flex;
+  justify-content: space-between;
+}
