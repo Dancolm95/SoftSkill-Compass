@@ -2,11 +2,51 @@ h1 {
   text-align: center;
   padding-bottom: 20px;
 }
+
+h2 {
+  text-align: center;
+}
 .emociones {
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
 }
 
 footer {
   text-align: center;
+}
+
+.tarjetas-generadas {
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px auto;
+  width: 300px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  background-color: #fff;
+}
+
+.tarjetas-generadas img {
+  max-width: 100%;
+  height: auto;
+  margin-top: 15px;
+}
+
+.boton-emocion {
+  background-color: #4CAF50; /* verde agradable */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  margin: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.boton-emocion:hover {
+  background-color: #45a049; /* un verde un poco más oscuro al hacer hover */
 }
