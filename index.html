@@ -4,35 +4,46 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Softskill Compass</title>
-    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="./css/styles.css" />
   </head>
   <body>
-    <h1>¿Como te sientes Hoy?</h1>
+    <header id="encabezado">
+      <h1>SoftSkill - Compass</h1>
+      <h2>Tu Brújula Emocional</h2>
+    </header>
+    <main>
+      <section class="emociones">
+        <article class="emocion">
+          <button class="boton-emocion" id="feliz">Feliz</button>
+          <!-- <img src="./assets/img/feliz.jpeg" alt="" /> -->
+          <!-- <p>Le veo el lado positivo a todo</p> -->
+        </article>
+        <article class="emocion">
+          <button class="boton-emocion"  id="molesto">Molesto</button>
+          <!-- <img src="./assets/img/molesto.jpeg" alt="" /> -->
+          <!-- <p>Ni me miren que no quiero hablar</p> -->
+        </article>
+        <article class="emocion">
+          <button class="boton-emocion" id="ansioso">Ansioso</button>
+          <!-- <img src="./assets/img/ansioso.jpeg" alt="" /> -->
+          <!-- <p>No me puedo concentrar en nada en concreto</p> -->
+        </article>
+        <article class="emocion">
+          <button class="boton-emocion" id="triste">Triste</button>
+          <!-- <img src="./assets/img/triste.jpeg" alt="" /> -->
+          <!-- <p>Hoy nada tiene sentido para mi</p> -->
+        </article>
+      </section>
 
-    <section class="emociones">
-      <div class="emocion">
-        <button id="feliz">Feliz</button>
-        <img src="./assets/img/feliz.jpeg" alt=""/>
-        <p>Le veo el lado positivo a todo</p>
-      </div>
-      <div class="emocion">
-        <button id="molesto">Molesto</button>
-        <img src="./assets/img/molesto.jpeg" alt=""/>
-        <p>Ni me miren que no quiero hablar</p>
-      </div>
-      <div class="emocion">
-        <button id="ansioso">Ansioso</button>
-        <img src="./assets/img/ansioso.jpeg" alt=""/>
-        <p>No me puedo concentrar en nada en concreto</p>
-      </div>
-      <div class="emocion">
-        <button id="triste">Triste</button>
-        <img src="./assets/img/triste.jpeg" alt=""/>
-        <p>Hoy nada tiene sentido para mi</p>
-      </div>
-    </section>
+      <section id="contenedor-tarjetas">
 
-    <footer>No olvidemos que las pequeñas emociones son los grandes capitanes de nuestras vidas y las obedecemos sin darnos cuenta</footer>
+      </section>
+    </main>
+
+    <footer id="footer">
+      No olvidemos que las pequeñas emociones son los grandes capitanes de
+      nuestras vidas y las obedecemos sin darnos cuenta
+    </footer>
 
     <script src="./js/script.js"></script>
   </body>
