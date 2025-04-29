@@ -37,7 +37,7 @@
     e.addEventListener('click', (event) => {
      const emocionClickeada = event.target.id
       const busqueda= emociones.find(emocion => emocion.nombre.toLocaleLowerCase() === emocionClickeada.toLocaleLowerCase())
-      console.log(busqueda)
+     
 
       const miArticle = document.createElement('article')
       miArticle.classList.add('tarjetas-generadas');
@@ -49,7 +49,7 @@
 
       const imagenEmocion = document.createElement('img')
       imagenEmocion.src = `assets/img/${busqueda.imagen}`
-      console.log(busqueda.imagen)
+      
 
       miArticle.appendChild(tituloEmocion)
       miArticle.appendChild(parrafoEmocion)
