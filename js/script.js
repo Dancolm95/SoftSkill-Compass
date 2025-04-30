@@ -77,9 +77,9 @@ document.querySelectorAll(".emocion").forEach((boton) => {
       const playlist = await buscarPlaylist(keyword, token);
 
       document.getElementById("resultado").innerHTML = `
-          <p>Estado emocional: <strong>${emocionId}</strong></p>
+          <p class="titulo-emocion">Estado emocional: <strong>${emocionId}</strong></p>
           <p>Te recomendamos esta playlist:</p>
-          <div style="display: flex; allign-items: center; gap: 20px;">
+          <div style="display: flex; align-items: center; gap: 20px;">
           <img src="${playlist.images?.[0]?.url || 'https://via.placeholder.com/150?text=Sin+imagen'}" width="150" style="border-radius: 8px;">
 
           </div>
