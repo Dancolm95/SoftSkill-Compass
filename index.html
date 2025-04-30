@@ -5,13 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Softskill Compass</title>
     <link rel="stylesheet" href="./css/styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
   </head>
   <body>
     <header id="encabezado">
-      <h1>SoftSkill - Compass</h1>
+      <h1>
+        <i class="fas fa-brain"></i> SoftSkill - Compass <i class="fas fa-microphone-alt"></i>
+      </h1>
       <h2>Tu Brújula Emocional</h2>
     </header>
-    <main>
+    <main id="contenedor-principal">
       <section class="emociones">
         <article class="emocion">
           <button class="boton-emocion" id="feliz">Feliz</button>
@@ -35,14 +39,14 @@
         </article>
       </section>
 
-      <section id="contenedor-tarjetas">
+      <section id="contenedor-tarjetas"></section>
 
-      </section>
-
+      <div class="recomendacion-box">
       <section id="recomendacion-musical"></section>
+      <div id="resultado"></div>
+    </div>
     </main>
 
-    <div id="resultado"></div>
 
     <footer id="footer">
       No olvidemos que las pequeñas emociones son los grandes capitanes de
