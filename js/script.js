@@ -67,6 +67,18 @@
 import emociones from "../js/emociones.js";
 import { obtenerTokenSpotify, buscarPlaylist } from "./spotify.js";
 
+window.addEventListener("DOMContentLoaded", () => {
+  const emocionGuardada = localStorage.getItem("ultimaEmocion");
+  if (emocionGuardada) {
+    const mensaje = document.createElement("div");
+    mensaje.classList.add("mensaje-bienvenida");
+    mensaje.innerText = `Hola de nuevo ¿Sigues sintiendote "${emocionGuardada}"?`;
+    document.body.prepend(mensaje);
+  }
+  console.log("Valor recuperado del localStorage:", emocionGuardada);
+});
+
+
 document.querySelectorAll(".emocion").forEach((boton) => {
   boton.addEventListener("click", async () => {
     const emocionId = boton.id;
@@ -80,12 +92,17 @@ document.querySelectorAll(".emocion").forEach((boton) => {
           <p class="titulo-emocion">Estado emocional: <strong>${emocionId}</strong></p>
           <p>Te recomendamos esta playlist:</p>
           <div style="display: flex; align-items: center; gap: 20px;">
-          <img src="${playlist.images?.[0]?.url || 'https://via.placeholder.com/150?text=Sin+imagen'}" width="150" style="border-radius: 8px;">
+          <img src="${
+            playlist.images?.[0]?.url ||
+            "https://via.placeholder.com/150?text=Sin+imagen"
+          }" width="150" style="border-radius: 8px;">
 
           </div>
           <p><strong>${playlist.name}</strong></p>
           <p>Creada por: <em>${playlist.owner.display_name}</em></p>
-          <a href="${playlist.external_urls.spotify}" target="_blank">${playlist.name}</a><br>
+          <a href="${playlist.external_urls.spotify}" target="_blank">${
+        playlist.name
+      }</a><br>
         `;
     } catch (error) {
       console.error(error);
@@ -100,5 +117,6 @@ emocionSeleccionada.forEach((boton) => {
   boton.addEventListener("click", (evento) => {
     const idEmocion = evento.target.id;
     console.log("emocion seleccionada", idEmocion);
+    localStorage.setItem("ultimaEmocion", idEmocion);
   });
 });
