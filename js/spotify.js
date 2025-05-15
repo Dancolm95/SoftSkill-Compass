@@ -34,3 +34,9 @@ export async function buscarPlaylist(emocion, token) {
   const randomIndex = Math.floor(Math.random() * playlists.length);
   return playlists[randomIndex]
 }
+
+async function obtenerFrase() {
+  const response = await fetch('https://api.quotable.io/random?tags=inspirational');
+  const data = response.json();
+  return data;
+}
