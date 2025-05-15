@@ -80,8 +80,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
 document.querySelectorAll(".emocion").forEach((boton) => {
-  boton.addEventListener("click", async () => {
-    const emocionId = boton.id;
+  boton.addEventListener("click", async (e) => {
+    const emocionId = e.currentTarget.id;
     const keyword = emociones[emocionId];
 
     try {

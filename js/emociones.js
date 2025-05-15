@@ -5,4 +5,4 @@ const emociones = {
   ansioso: 'anxious'
 };
 
-export default {}
+export default emociones
