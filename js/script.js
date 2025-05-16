@@ -1,39 +1,39 @@
 import emociones from "../js/emociones.js";
 import { obtenerTokenSpotify, buscarPlaylist } from "./spotify.js";
 
-    function mostrarHistorial() {
-      const contenedor = document.getElementById("historial");
-      const historial =
-        JSON.parse(localStorage.getItem("historialEmociones")) || [];
+function mostrarHistorial() {
+  const contenedor = document.getElementById("historial");
+  const historial =
+    JSON.parse(localStorage.getItem("historialEmociones")) || [];
 
-      contenedor.innerHTML = "";
+  contenedor.innerHTML = "";
 
-      if (historial.length === 0) {
-        contenedor.innerHTML = '';
-        return
-      };
+  if (historial.length === 0) {
+    contenedor.innerHTML = "";
+    return;
+  }
 
-      //tarjeta que contendra el historial
-      const tarjeta = document.createElement('div');
-      tarjeta.classList.add('tarjeta-historial');
+  //tarjeta que contendra el historial
+  const tarjeta = document.createElement("div");
+  tarjeta.classList.add("tarjeta-historial");
 
-      const titulo = document.createElement('h3');
-      titulo.textContent = '🧠 Historial emocional';
-      tarjeta.appendChild(titulo);
+  const titulo = document.createElement("h3");
+  titulo.textContent = "🧠 Historial emocional";
+  tarjeta.appendChild(titulo);
 
-      historial.slice(0, 5).forEach((item) => {
-        contenedor.innerHTML += `
+  historial.slice(0, 5).forEach((item) => {
+    contenedor.innerHTML += `
       <div class="historial-item">
         <p><strong>${item.emocion}</strong> – ${new Date(
-          item.fecha
-        ).toLocaleString()}</p>
+      item.fecha
+    ).toLocaleString()}</p>
         <p>🎵 ${item.playlist}</p>
         <p>💬 "${item.frase}" — <em>${item.autor}</em></p>
         <hr>
       </div>
     `;
-      });
-    }
+  });
+}
 
 async function obtenerFrase() {
   const response = await fetch(
@@ -44,36 +44,55 @@ async function obtenerFrase() {
 }
 /* mostrar saludo si hay emocion guardada */
 window.addEventListener("DOMContentLoaded", () => {
-  document.getElementById('resultado-box').classList.remove('oculto');
-  document.getElementById('resultado').innerHTML = '';
+  document.getElementById("resultado-box").classList.add("oculto");
+  document.getElementById("resultado").innerHTML = "";
   mostrarHistorial();
   const emocionGuardada = localStorage.getItem("ultimaEmocion");
-  if (emocionGuardada) {
+  console.log("Valor crudo drecuperado del localstorage: ", emocionGuardada)
+  if (
+    !emocionGuardada ||
+    typeof emocionGuardada !== "string" ||
+    emocionGuardada.trim() === ""
+  ) {
+    console.warn('⚠️ No se recuperó una emoción válida del localStorage');
+    return;
+  }
+    const emocionData = emociones.find(
+      emocion => emocion.nombre.toLocaleLowerCase() === emocionGuardada.toLocaleLowerCase()
+    );
+
+    if (!emocionData) {
+      console.warn('❌ Emoción no encontrada para el ID (a pesar de ser string): ', emocionGuardada);
+      return
+    }
+  
     const mensaje = document.createElement("div");
     mensaje.classList.add("mensaje-bienvenida");
-    mensaje.innerText = `Hola de nuevo ¿Sigues sintiendote "${emocionGuardada}"?`;
+    mensaje.innerText = `Hola de nuevo ¿Sigues sintiéndote "${emocionGuardada}"?`;
     document.body.prepend(mensaje);
+    console.log("Valor recuperado del localStorage:", localStorage.getItem('ultimaEmocion'));
   }
-  console.log("Valor recuperado del localStorage:", emocionGuardada);
-});
+);
 /* logica principal al hacer click en una emocion */
-document.querySelectorAll(".emocion").forEach((boton) => {
+document.querySelectorAll(".boton-emocion").forEach((boton) => {
   boton.addEventListener("click", async (e) => {
     const emocionId = e.currentTarget.id;
-   /*  const keyword = emociones[emocionId]; */
-    const emocionData = emociones.find (emocion => emocion.nombre.toLowerCase()=== emocionId.toLowerCase());
+    const emocionData = emociones.find(
+      (emocion) => emocion.nombre.toLowerCase() === emocionId.toLowerCase()
+    );
     if (!emocionData) {
-      console.warn('Emocion no encontrada para el ID: ', emocionId);
-      return ;
+      console.warn("Emocion no encontrada para el ID: ", emocionId);
+      return;
     }
     localStorage.setItem("ultimaEmocion", emocionId);
     try {
       const token = await obtenerTokenSpotify();
       const playlist = await buscarPlaylist(emocionId, token);
       if (!emocionId) {
-        throw new Error('Emocion no definida al buscar playlist')
+        throw new Error("Emocion no definida al buscar playlist");
       }
       const frase = await obtenerFrase();
+      document.getElementById("resultado-box").classList.remove("oculto");
 
       document.getElementById("resultado").innerHTML = `
           <p class="titulo-emocion">Estado emocional: <strong>${emocionId}</strong></p>
@@ -104,7 +123,7 @@ document.querySelectorAll(".emocion").forEach((boton) => {
 
       historial.unshift({
         fecha: new Date().toISOString(),
-        emocion: emocionData.name,
+        emocion: emocionData.nombre,
         playlist: playlist.name,
         frase: frase.content,
         autor: frase.author,
