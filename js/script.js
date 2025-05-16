@@ -1,71 +1,39 @@
-// const respuesta = document.querySelectorAll('.emocion')
-// const emociones = {
-//   feliz: "¡Qué alegría! 😊",
-//   triste: "Estoy contigo 💙",
-//   molesto: "Respirá hondo, todo pasa 🧘",
-//   ansioso: "Tomá un minuto, estás a salvo ⏳"
-// }
-// const emociones = [
-//   {
-//     nombre: "Feliz",
-//     frase: "¡Qué alegría! 😊",
-//     imagen: "feliz.jpeg"
-//   },
-
-//   {
-//     nombre: "Triste",
-//     frase: "Estoy contigo 💙",
-//     imagen: "triste.jpeg"
-//   },
-
-//   {
-//     nombre: "Ansioso",
-//     frase: "Respira, todo está bien ⏳",
-//     imagen: "ansioso.jpeg"
-//   },
-
-//   {
-//     nombre: "Molesto",
-//     frase: "Respira hondo, todo pasa 🧘",
-//     imagen: "molesto.jpeg"
-//   }
-// ]
-
-// const botones = document.querySelectorAll('.boton-emocion')
-// botones.forEach(e => {
-//   e.addEventListener('click', (event) => {
-//    const emocionClickeada = event.target.id
-//     const busqueda= emociones.find(emocion => emocion.nombre.toLocaleLowerCase() === emocionClickeada.toLocaleLowerCase())
-
-//     const miArticle = document.createElement('article')
-//     miArticle.classList.add('tarjetas-generadas');
-//     const tituloEmocion = document.createElement('h2')
-//     tituloEmocion.innerText = busqueda.nombre;
-
-//     const parrafoEmocion = document.createElement('p')
-//     parrafoEmocion.innerText = busqueda.frase
-
-//     const imagenEmocion = document.createElement('img')
-//     imagenEmocion.src = `assets/img/${busqueda.imagen}`
-
-//     miArticle.appendChild(tituloEmocion)
-//     miArticle.appendChild(parrafoEmocion)
-//     miArticle.appendChild(imagenEmocion)
-
-//     const contenedor = document.getElementById('contenedor-tarjetas')
-//     if (contenedor.firstChild) {
-//       contenedor.firstChild.remove()
-//     }
-//     contenedor.appendChild(miArticle)
-
-//     setTimeout(()=> {
-//       miArticle.remove();
-//     }, 5000)
-//   })
-// })
-
 import emociones from "../js/emociones.js";
 import { obtenerTokenSpotify, buscarPlaylist } from "./spotify.js";
+
+    function mostrarHistorial() {
+      const contenedor = document.getElementById("historial");
+      const historial =
+        JSON.parse(localStorage.getItem("historialEmociones")) || [];
+
+      contenedor.innerHTML = "";
+
+      if (historial.length === 0) {
+        contenedor.innerHTML = '';
+        return
+      };
+
+      //tarjeta que contendra el historial
+      const tarjeta = document.createElement('div');
+      tarjeta.classList.add('tarjeta-historial');
+
+      const titulo = document.createElement('h3');
+      titulo.textContent = '🧠 Historial emocional';
+      tarjeta.appendChild(titulo);
+
+      historial.slice(0, 5).forEach((item) => {
+        contenedor.innerHTML += `
+      <div class="historial-item">
+        <p><strong>${item.emocion}</strong> – ${new Date(
+          item.fecha
+        ).toLocaleString()}</p>
+        <p>🎵 ${item.playlist}</p>
+        <p>💬 "${item.frase}" — <em>${item.autor}</em></p>
+        <hr>
+      </div>
+    `;
+      });
+    }
 
 async function obtenerFrase() {
   const response = await fetch(
@@ -76,6 +44,8 @@ async function obtenerFrase() {
 }
 /* mostrar saludo si hay emocion guardada */
 window.addEventListener("DOMContentLoaded", () => {
+  document.getElementById('resultado-box').classList.remove('oculto');
+  document.getElementById('resultado').innerHTML = '';
   mostrarHistorial();
   const emocionGuardada = localStorage.getItem("ultimaEmocion");
   if (emocionGuardada) {
@@ -90,11 +60,19 @@ window.addEventListener("DOMContentLoaded", () => {
 document.querySelectorAll(".emocion").forEach((boton) => {
   boton.addEventListener("click", async (e) => {
     const emocionId = e.currentTarget.id;
-    const keyword = emociones[emocionId];
+   /*  const keyword = emociones[emocionId]; */
+    const emocionData = emociones.find (emocion => emocion.nombre.toLowerCase()=== emocionId.toLowerCase());
+    if (!emocionData) {
+      console.warn('Emocion no encontrada para el ID: ', emocionId);
+      return ;
+    }
     localStorage.setItem("ultimaEmocion", emocionId);
     try {
       const token = await obtenerTokenSpotify();
-      const playlist = await buscarPlaylist(keyword, token);
+      const playlist = await buscarPlaylist(emocionId, token);
+      if (!emocionId) {
+        throw new Error('Emocion no definida al buscar playlist')
+      }
       const frase = await obtenerFrase();
 
       document.getElementById("resultado").innerHTML = `
@@ -113,47 +91,26 @@ document.querySelectorAll(".emocion").forEach((boton) => {
         playlist.name
       }</a><br>
         `;
-      guardarHistorial(emocionId, playlist, frase);
+      guardarHistorial(emocionData, playlist, frase);
       mostrarHistorial();
     } catch (error) {
       console.error(error);
       document.getElementById("resultado").innerText =
         "Error al obtener recomendación. Intenta de nuevo.";
     }
-    function guardarHistorial(emocionId, playlist, frase) {
+    function guardarHistorial(emocionData, playlist, frase) {
       const historial =
         JSON.parse(localStorage.getItem("historialEmociones")) || [];
 
       historial.unshift({
         fecha: new Date().toISOString(),
-        emocion: emocionId,
+        emocion: emocionData.name,
         playlist: playlist.name,
         frase: frase.content,
         autor: frase.author,
       });
 
       localStorage.setItem("historialEmociones", JSON.stringify(historial));
-    }
-
-    function mostrarHistorial() {
-      const contenedor = document.getElementById("historial");
-      const historial =
-        JSON.parse(localStorage.getItem("historialEmociones")) || [];
-
-      contenedor.innerHTML = "<h3>🧠 Historial emocional</h3>";
-
-      historial.slice(0, 5).forEach((item) => {
-        contenedor.innerHTML += `
-      <div class="historial-item">
-        <p><strong>${item.emocion}</strong> – ${new Date(
-          item.fecha
-        ).toLocaleString()}</p>
-        <p>🎵 ${item.playlist}</p>
-        <p>💬 "${item.frase}" — <em>${item.autor}</em></p>
-        <hr>
-      </div>
-    `;
-      });
     }
   });
 });
