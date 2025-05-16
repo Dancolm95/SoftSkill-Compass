@@ -37,14 +37,22 @@
 
       <section id="contenedor-tarjetas"></section>
 
-      <div class="recomendacion-box">
-      <section id="recomendacion-musical"></section>
-      <div id="resultado"></div>
-    </div>
-    <div id="resultado"></div>
-    <div id="historial" class="historial-box"></div>
-    </main>
+      <!-- Recomendacion musical -->
+      <section class="recomendacion-box oculto">
+        <div id="recomendacion-musical">
 
+        </div>
+      </section>
+
+      <!-- Caja de resultado de playlist + frase  -->
+      <section id="resultado-box" class="oculto">
+        <div id="resultado">
+
+        </div>
+      </section>
+
+      <!-- historial de emociones -->
+      <section id="historial" class="historial-box"></section>
 
     <footer id="footer">
       No olvidemos que las pequeñas emociones son los grandes capitanes de
@@ -52,6 +60,5 @@
     </footer>
 
     <script src="./js/script.js" type="module"></script>
-    <!-- <script src="./js/spotify.js"></script> -->
   </body>
 </html>
